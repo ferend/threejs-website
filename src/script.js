@@ -3,19 +3,11 @@ import './main.css'
 import * as THREE from 'three'
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
-// DRACO LOADER TO LOAD DRACO COMPRESSED MODELS FROM BLENDER
-// const dracoLoader = new DRACOLoader()
-const loader = new GLTFLoader()
-// dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
-// dracoLoader.setDecoderConfig({ type: 'js' })
-// loader.setDRACOLoader(dracoLoader)
 
 ///// DIV CONTAINER CREATION TO HOLD THREEJS EXPERIENCE
 const container = document.createElement('div')
-document.body.appendChild(container)
+document.body.appendChild(container);
 
 ///// SCENE CREATION
 const scene = new THREE.Scene()
@@ -23,7 +15,7 @@ scene.background = new THREE.Color('#c8f0f9')
 
 ///// CAMERAS CONFIG
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000)
-camera.position.set(34,16,-100)
+camera.position.set(34,16,100)
 scene.add(camera)
 
 
@@ -60,13 +52,6 @@ scene.add(sunLight);
 const gridHelper = new THREE.GridHelper(200,50);
 scene.add(gridHelper);
 
-
-
-///// LOADING GLB/GLTF MODEL FROM BLENDER
-loader.load('models/gltf/starter-scene.glb', function (gltf) {
-
-    scene.add(gltf.scene)
-})
 
 //// INTRO CAMERA ANIMATION USING TWEEN
 function introAnimation() {
@@ -121,7 +106,8 @@ Array(100).fill().forEach(addStars);
 
 //// ADD BACKGROUND
 
-const spaceTexture = new THREE.TextureLoader().load()
+const spaceTexture = new THREE.TextureLoader().load('bg2.jpg');
+ scene.background = spaceTexture;
 
 //// RENDER LOOP FUNCTION
 function renderLoop() {
