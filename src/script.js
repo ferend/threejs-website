@@ -1,4 +1,3 @@
-/////////////////////////////////////////////////////////////////////////
 ///// IMPORT
 import './main.css'
 import * as THREE from 'three'
@@ -7,13 +6,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
-/////////////////////////////////////////////////////////////////////////
-//// DRACO LOADER TO LOAD DRACO COMPRESSED MODELS FROM BLENDER
-const dracoLoader = new DRACOLoader()
+// DRACO LOADER TO LOAD DRACO COMPRESSED MODELS FROM BLENDER
+// const dracoLoader = new DRACOLoader()
 const loader = new GLTFLoader()
-dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
-dracoLoader.setDecoderConfig({ type: 'js' })
-loader.setDRACOLoader(dracoLoader)
+// dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/')
+// dracoLoader.setDecoderConfig({ type: 'js' })
+// loader.setDRACOLoader(dracoLoader)
 
 ///// DIV CONTAINER CREATION TO HOLD THREEJS EXPERIENCE
 const container = document.createElement('div')
@@ -25,7 +23,7 @@ scene.background = new THREE.Color('#c8f0f9')
 
 ///// CAMERAS CONFIG
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000)
-camera.position.set(34,16,-20)
+camera.position.set(34,16,-100)
 scene.add(camera)
 
 
@@ -53,11 +51,16 @@ const controls = new OrbitControls(camera, renderer.domElement)
 
 ///// SCENE LIGHTS
 const ambient = new THREE.AmbientLight(0xa0a0fc, 0.82)
-scene.add(ambient)
+scene.add(ambient);
 
 const sunLight = new THREE.DirectionalLight(0xe8c37b, 1.96)
 sunLight.position.set(-69,44,14)
-scene.add(sunLight)
+scene.add(sunLight);
+
+const gridHelper = new THREE.GridHelper(200,50);
+scene.add(gridHelper);
+
+
 
 ///// LOADING GLB/GLTF MODEL FROM BLENDER
 loader.load('models/gltf/starter-scene.glb', function (gltf) {
@@ -68,7 +71,7 @@ loader.load('models/gltf/starter-scene.glb', function (gltf) {
 //// INTRO CAMERA ANIMATION USING TWEEN
 function introAnimation() {
     controls.enabled = false //disable orbit controls to animate the camera
-    
+
     new TWEEN.Tween(camera.position.set(26,4,-35 )).to({ // from camera position
         x: 16, //desired x position to go
         y: 50, //desired y position to go
@@ -82,7 +85,7 @@ function introAnimation() {
     })
 }
 
-introAnimation() // call intro animation on start
+// introAnimation() // call intro animation on start
 
 //// DEFINE ORBIT CONTROLS LIMITS
 function setOrbitControlsLimits(){
@@ -95,8 +98,33 @@ function setOrbitControlsLimits(){
     controls.maxPolarAngle = Math.PI /2.5
 }
 
+//// OBJECT CREATION
+const geometry = new THREE.TorusGeometry(10,3,16,200);
+const material = new THREE.MeshStandardMaterial({
+    color: 0xff6367, wireframe: false
+});
+const torusMesh = new THREE.Mesh(geometry,material);
+scene.add(torusMesh);
+
+//// Stars
+function addStars() {
+    const geom = new THREE.OctahedronGeometry(0.3,0);
+    const mat = new THREE.MeshStandardMaterial({color: 'red'});
+    const star = new THREE.Mesh(geom,mat);
+
+    const[x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
+    star.position.set(x,y,z);
+    scene.add(star);
+}
+
+Array(100).fill().forEach(addStars);
+
+//// ADD BACKGROUND
+
+const spaceTexture = new THREE.TextureLoader().load()
+
 //// RENDER LOOP FUNCTION
-function rendeLoop() {
+function renderLoop() {
 
     TWEEN.update() // update animations
 
@@ -104,8 +132,8 @@ function rendeLoop() {
 
     renderer.render(scene, camera) // render the scene using the camera
 
-    requestAnimationFrame(rendeLoop) //loop the render function
-    
+    requestAnimationFrame(renderLoop) //loop the render function
+
 }
 
-rendeLoop() //start rendering
+renderLoop() //start rendering
