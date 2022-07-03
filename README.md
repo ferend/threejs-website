@@ -22,7 +22,6 @@ npm run dev
 ```
 
 # Debug interface
-<img src="./static/debug.jpg" width="100%"/>
 You can enable a debug interface by getting the contents of "debug.js" file and place it in the end of the main file. This will give you some interface to change things like colors and light position, which can be very useful when you change the model to something else.
 
 
