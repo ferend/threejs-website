@@ -1,6 +1,4 @@
 # THreeJS Personal Webpage
-<h4>by Anderson Mancini</h4>
-
 
 # Introduction
 
