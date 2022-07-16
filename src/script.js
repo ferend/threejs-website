@@ -80,9 +80,23 @@ function setOrbitControlsLimits(){
 }
 
 //// OBJECT CREATION
-const geometry = new THREE.TorusGeometry(10,3,16,200);
+const verticesOfCube = [
+    -1, -1, -1,    1, -1, -1,    1,  1, -1,    -1,  1, -1,
+    -1, -1,  1,    1, -1,  1,    1,  1,  1,    -1,  1,  1,
+];
+const indicesOfFaces = [
+    2, 1, 0,    0, 3, 2,
+    0, 4, 7,    7, 3, 0,
+    0, 1, 5,    5, 4, 0,
+    1, 2, 6,    6, 5, 1,
+    2, 3, 7,    7, 6, 2,
+    4, 5, 6,    6, 7, 4,
+];
+const radius = 9;
+const detail = 10;
+const geometry = new THREE.PolyhedronBufferGeometry(verticesOfCube, indicesOfFaces, radius, detail);
 const material = new THREE.MeshStandardMaterial({
-    color: 0xff6367, wireframe: false
+    color: 0xff6367, wireframe: true
 });
 const torusMesh = new THREE.Mesh(geometry,material);
 scene.add(torusMesh);
@@ -98,12 +112,12 @@ function addStars() {
     scene.add(star);
 }
 
-Array(200).fill().forEach(addStars);
+Array(900).fill().forEach(addStars);
 
 
 //// ADD BACKGROUND
 scene.fog = new THREE.Fog(scene.background, 42.5, 70);
-var division = 30;
+var division = 100;
 var limit = 200;
 var grid = new THREE.GridHelper(limit * 2, division, "magenta", "purple");
 
