@@ -11,7 +11,7 @@ document.body.appendChild(container);
 
 ///// SCENE CREATION
 const scene = new THREE.Scene()
-scene.background = new THREE.Color('#c8f0f9')
+scene.background = new THREE.Color('#74C79F')
 
 ///// CAMERAS CONFIG
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000)
@@ -80,23 +80,10 @@ function setOrbitControlsLimits(){
 }
 
 //// OBJECT CREATION
-const verticesOfCube = [
-    -1, -1, -1,    1, -1, -1,    1,  1, -1,    -1,  1, -1,
-    -1, -1,  1,    1, -1,  1,    1,  1,  1,    -1,  1,  1,
-];
-const indicesOfFaces = [
-    2, 1, 0,    0, 3, 2,
-    0, 4, 7,    7, 3, 0,
-    0, 1, 5,    5, 4, 0,
-    1, 2, 6,    6, 5, 1,
-    2, 3, 7,    7, 6, 2,
-    4, 5, 6,    6, 7, 4,
-];
-const radius = 9;
-const detail = 10;
-const geometry = new THREE.PolyhedronBufferGeometry(verticesOfCube, indicesOfFaces, radius, detail);
+const radius = 7;  // ui: radius
+const geometry = new THREE.IcosahedronGeometry(radius);
 const material = new THREE.MeshStandardMaterial({
-    color: 0xff6367, wireframe: true
+    color: 0xC7E7B, wireframe: false
 });
 const torusMesh = new THREE.Mesh(geometry,material);
 scene.add(torusMesh);
@@ -116,10 +103,9 @@ Array(900).fill().forEach(addStars);
 
 
 //// ADD BACKGROUND
-scene.fog = new THREE.Fog(scene.background, 42.5, 70);
 var division = 100;
 var limit = 200;
-var grid = new THREE.GridHelper(limit * 2, division, "magenta", "purple");
+var grid = new THREE.GridHelper(limit * 2, division, "#00163F", "#00163F");
 
 var moveable = [];
 for (let i = 0; i <= division; i++) {
